@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1000858105446",
+    "project_id": "tuncdating",
+    "storage_bucket": "tuncdating.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000858105446:android:2cfd4490e8d1a028291fa7",
+        "android_client_info": {
+          "package_name": "site.tunckankilic.tuncdating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000858105446-gi84mavp463db7uol22k341us69p5dma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlhuYfq7TpLMpAdQNFw3tAFSPnl-Y4nVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000858105446-gi84mavp463db7uol22k341us69p5dma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
