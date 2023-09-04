@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:get/route_manager.dart';
 import 'package:tuncdating/controllers/router.dart';
-import 'package:tuncdating/views/screens/auth/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tuncdating/services/pub_dev.dart';
+import 'package:tuncdating/views/screens/screens.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.red[900],
       ),
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
-      initialRoute: LoginScreen.routeName,
+      initialRoute: FirebaseAuth.instance.currentUser != null
+          ? HomeScreen.routeName
+          : LoginScreen.routeName,
     );
   }
 }

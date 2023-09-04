@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tuncdating/controllers/auth_controller.dart';
 import 'package:tuncdating/views/screens/auth/screens/screens.dart';
 import '../widgets/widgets.dart';
 
@@ -70,10 +71,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           showPB = true;
                         });
+                        await AuthenticationController()
+                            .loginUser(
+                                passwordController: passwordController,
+                                emailController: emailController)
+                            .whenComplete(() => setState(() {
+                                  showPB = false;
+                                }));
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

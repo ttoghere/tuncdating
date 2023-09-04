@@ -1,15 +1,18 @@
-import 'dart:io';
+// ignore_for_file: library_prefixes, unused_local_variable
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:tuncdating/models/person.dart' as pM;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:tuncdating/models/person.dart' as pM;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuncdating/services/pub_dev.dart';
+import 'package:tuncdating/views/screens/screens.dart';
 
 class AuthenticationController extends GetxController {
   static AuthenticationController authController = Get.find();
 
+  late Rx<User?> firebaseCurrentUser;
   late Rx<File?> pickedFile;
   File? get profileImage => pickedFile.value;
   XFile? imageFile;
@@ -93,6 +96,7 @@ class AuthenticationController extends GetxController {
       //Save user info to Firstore
       pM.Person personInstance = pM.Person(
         //personal info
+        uid: FirebaseAuth.instance.currentUser!.uid,
         imageProfile: urlOfDownloadedIMG,
         email: email,
         password: password,
@@ -144,5 +148,55 @@ class AuthenticationController extends GetxController {
     } catch (error) {
       return Get.snackbar("Error", "Error Occured: $error)");
     }
+  }
+
+  Future<void> loginUser(
+      {required TextEditingController passwordController,
+      required TextEditingController emailController}) async {
+    if (passwordController.text != "" && emailController.text != "") {
+      try {
+        final userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        if (userCredential.user != null) {
+          Get.snackbar("Succesful", "You have been logged in ");
+          Get.toNamed(HomeScreen.routeName);
+        } else {
+          Get.snackbar("Error", "Error");
+        }
+      } on FirebaseAuthException catch (e) {
+        Get.snackbar("Error", e.message ?? "An error occurred");
+      } catch (e) {
+        Get.snackbar("Error", e.toString());
+      }
+    } else {
+      Get.snackbar("Error", "Fill your fields");
+    }
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Get.toNamed(LoginScreen.routeName);
+  }
+
+  checkIfUserLoggedIn({User? currentUser}) {
+    if (currentUser == null) {
+      Get.toNamed(LoginScreen.routeName);
+    } else {
+      Get.toNamed(HomeScreen.routeName);
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    firebaseCurrentUser = Rx<User?>(FirebaseAuth.instance.currentUser);
+    firebaseCurrentUser.bindStream(FirebaseAuth.instance.authStateChanges());
+    firebaseCurrentUser.listen((user) {
+      checkIfUserLoggedIn(currentUser: user);
+    });
   }
 }
