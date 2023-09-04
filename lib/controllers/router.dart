@@ -28,6 +28,13 @@ class RouteGenerator {
             builder: (_) {
               return const SplashScreen();
             });
+      case UserDetails.routeName:
+        var userID = settings.arguments as String;
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return UserDetails(userId: userID);
+            });
       default:
         return _errorRoute();
     }

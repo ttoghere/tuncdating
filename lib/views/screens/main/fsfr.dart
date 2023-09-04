@@ -31,7 +31,7 @@ class _FavoriteSendFavoriteReceivedState
         favoriteSentList.add(favoriteSentDocument.docs[i].id);
       }
 
-      print("favoriteSentList = $favoriteSentList");
+      log("favoriteSentList = $favoriteSentList");
       getKeysDataFromUsersCollection(favoriteSentList);
     } else {
       var favoriteReceivedDocument = await FirebaseFirestore.instance
@@ -44,7 +44,7 @@ class _FavoriteSendFavoriteReceivedState
         favoriteReceivedList.add(favoriteReceivedDocument.docs[i].id);
       }
 
-      print("favoriteReceivedList = $favoriteReceivedList");
+      log("favoriteReceivedList = $favoriteReceivedList");
       getKeysDataFromUsersCollection(favoriteReceivedList);
     }
   }
@@ -66,15 +66,20 @@ class _FavoriteSendFavoriteReceivedState
       favoritesList;
     });
 
-    print("favoritesList = $favoritesList");
+    log("favoritesList = $favoritesList");
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     getFavoriteListKeys();
+  }
+
+  @override
+  void dispose() {
+    getKeysDataFromUsersCollection(favoriteSentList);
+    super.dispose();
   }
 
   @override

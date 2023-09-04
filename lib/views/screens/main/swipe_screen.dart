@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tuncdating/controllers/profile_controllers.dart';
 import 'package:get/get.dart';
 import 'package:tuncdating/services/global.dart';
+import 'package:tuncdating/views/screens/screens.dart';
 
 class SwipeScreen extends StatefulWidget {
   const SwipeScreen({super.key});
@@ -72,7 +73,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
                     const Spacer(),
                     //User Data,
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        profileController.viewSentAndViewReceived(
+                          toUserId: eachProfile.uid.toString(),
+                          senderName: senderName,
+                        );
+                        //Navigate to UserProfile
+                        Get.toNamed(UserDetails.routeName,
+                            arguments: eachProfile.uid);
+                      },
                       child: Column(
                         children: [
                           Text(
@@ -217,7 +226,12 @@ class _SwipeScreenState extends State<SwipeScreen> {
                           ),
                         ), //Like Button
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            profileController.likeSentAndLikeReceived(
+                              toUserId: eachProfile.uid.toString(),
+                              senderName: senderName,
+                            );
+                          },
                           child: Image.asset(
                             "assets/like.png",
                             width: 60,

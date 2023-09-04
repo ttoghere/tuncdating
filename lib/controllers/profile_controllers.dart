@@ -73,6 +73,103 @@ class ProfileController extends GetxController {
     update();
   }
 
-  void favoriteSendFavoriteReceived(
-      {required String toUserId, required String senderName}) {}
+  viewSentAndViewReceived(
+      {required String toUserId, required String senderName}) async {
+    var document = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(toUserId)
+        .collection("viewReceived")
+        .doc(currentUserId)
+        .get();
+
+    //remove the likes from database
+    if (document.exists) {
+      //remove currentUserId from the favoriteReceived list of that profile person [toUserID]
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("viewReceived")
+          .doc(currentUserId)
+          .delete();
+
+      //remove profile person [toUserID] from the likeSent list of the currentUser
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("viewSent")
+          .doc(toUserId)
+          .delete();
+    } else //mark as Liked //add Liked in database
+    {
+      //add currentUserId to the likeReceived list of that profile person [toUserID]
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("viewReceived")
+          .doc(currentUserId)
+          .set({});
+
+      //add profile person [toUserID] to the likeSent list of the currentUser
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("viewSent")
+          .doc(toUserId)
+          .set({});
+
+      //send notification
+    }
+
+    update();
+  }
+
+  likeSentAndLikeReceived(
+      {required String toUserId, required String senderName}) async {
+    var document = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(toUserId)
+        .collection("likeReceived")
+        .doc(currentUserId)
+        .get();
+
+    //remove the likes from database
+    if (document.exists) {
+      //remove currentUserId from the favoriteReceived list of that profile person [toUserID]
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("likeReceived")
+          .doc(currentUserId)
+          .delete();
+
+      //remove profile person [toUserID] from the likeSent list of the currentUser
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("likeSent")
+          .doc(toUserId)
+          .delete();
+    } else //mark as Liked //add Liked in database
+    {
+      //add currentUserId to the likeReceived list of that profile person [toUserID]
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(toUserId)
+          .collection("likeReceived")
+          .doc(currentUserId)
+          .set({});
+
+      //add profile person [toUserID] to the likeSent list of the currentUser
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUserId)
+          .collection("likeSent")
+          .doc(toUserId)
+          .set({});
+
+      //send notification
+    }
+
+    update();
+  }
 }

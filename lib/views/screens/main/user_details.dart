@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slider/carousel.dart';
 
-import 'package:tuncdating/controllers/auth_controller.dart';
-
 class UserDetails extends StatefulWidget {
+  static const routeName = "/user";
   String? userId;
   UserDetails({
     Key? key,
