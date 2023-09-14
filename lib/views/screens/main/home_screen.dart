@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuncdating/models/push_notification_system.dart';
 import 'package:tuncdating/services/global.dart';
 import 'package:tuncdating/views/screens/screens.dart';
 
@@ -21,6 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
       userId: currentUserId,
     ),
   ];
+  @override
+  void initState() {
+    PushNotificationSystem notificationSystem = PushNotificationSystem();
+    notificationSystem.generateDeviceRegistrationToken();
+    notificationSystem.whenNotificationReceived(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

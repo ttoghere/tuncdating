@@ -72,14 +72,7 @@ class _FavoriteSendFavoriteReceivedState
   @override
   void initState() {
     super.initState();
-
     getFavoriteListKeys();
-  }
-
-  @override
-  void dispose() {
-    getKeysDataFromUsersCollection(favoriteSentList);
-    super.dispose();
   }
 
   @override

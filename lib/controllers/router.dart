@@ -16,6 +16,7 @@ class RouteGenerator {
             builder: (_) {
               return const RegistrationScreen();
             });
+
       case HomeScreen.routeName:
         return MaterialPageRoute(
             settings: settings,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tuncdating/controllers/auth_controller.dart';
+import 'package:tuncdating/views/screens/auth/screens/screens.dart';
 import 'package:tuncdating/views/screens/auth/widgets/widgets.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       TextEditingController();
   TextEditingController lookingForInaPartnerTextEditingController =
       TextEditingController();
+  TextEditingController genderTextEditingController = TextEditingController();
 
   //Appearance
   TextEditingController heightTextEditingController = TextEditingController();
@@ -53,6 +55,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       TextEditingController();
   TextEditingController relationshipYouAreLookingForTextEditingController =
       TextEditingController();
+
+  //Connections
+  TextEditingController linkedInTextEditingController = TextEditingController();
+  TextEditingController instagramTextEditingController =
+      TextEditingController();
+  TextEditingController githubTextEditingController = TextEditingController();
 
   //Background - Cultural Values
   TextEditingController nationalityTextEditingController =
@@ -241,6 +249,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: CustomTField(
                   textEditingController: ageTextEditingController,
                   labelText: "Age",
+                  iconData: Icons.numbers,
+                  isObscure: false,
+                ),
+              ),
+
+              const SizedBox(
+                height: 24,
+              ),
+              //Gender
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 36,
+                height: 55,
+                child: CustomTField(
+                  textEditingController: genderTextEditingController,
+                  labelText: "Gender",
                   iconData: Icons.numbers,
                   isObscure: false,
                 ),
@@ -675,7 +698,63 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
 
               const SizedBox(
-                height: 30,
+                height: 24,
+              ),
+
+              //Background - Cultural Values
+              const Text(
+                "Connections:",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(
+                height: 12,
+              ), //ethnicity
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 36,
+                height: 55,
+                child: CustomTField(
+                  textEditingController: linkedInTextEditingController,
+                  labelText: "LinkedIn",
+                  iconData: CupertinoIcons.eye,
+                  isObscure: false,
+                ),
+              ),
+
+              const SizedBox(
+                height: 24,
+              ), //ethnicity
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 36,
+                height: 55,
+                child: CustomTField(
+                  textEditingController: instagramTextEditingController,
+                  labelText: "Instagram",
+                  iconData: CupertinoIcons.eye,
+                  isObscure: false,
+                ),
+              ),
+
+              const SizedBox(
+                height: 24,
+              ), //ethnicity
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 36,
+                height: 55,
+                child: CustomTField(
+                  textEditingController: githubTextEditingController,
+                  labelText: "GitHub",
+                  iconData: CupertinoIcons.eye,
+                  isObscure: false,
+                ),
+              ),
+
+              const SizedBox(
+                height: 24,
               ),
 
               //create account button
@@ -689,9 +768,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     )),
                 child: InkWell(
                   onTap: () async {
-                    await formValidation().whenComplete(
-                      () => Get.snackbar("Successful", "User has been created"),
-                    );
+                    await formValidation()
+                        .whenComplete(
+                          () => Get.snackbar(
+                              "Successful", "User has been created"),
+                        )
+                        .then((value) => Get.toNamed(LoginScreen.routeName));
                   },
                   child: const Center(
                     child: Text(
@@ -718,7 +800,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     "Already have an account? ",
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                      color: Colors.white,
                     ),
                   ),
                   InkWell(
@@ -772,6 +854,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               lookingForInaPartnerTextEditingController.text
                   .trim()
                   .isNotEmpty &&
+              genderTextEditingController.text.trim().isNotEmpty &&
 
               //Appearance
               heightTextEditingController.text.trim().isNotEmpty &&
@@ -793,6 +876,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   .trim()
                   .isNotEmpty &&
 
+              //Connections
+              githubTextEditingController.text.trim().isNotEmpty &&
+              instagramTextEditingController.text.trim().isNotEmpty &&
+              linkedInTextEditingController.text.trim().isNotEmpty &&
               //Background - Cultural Values
               nationalityTextEditingController.text.trim().isNotEmpty &&
               educationTextEditingController.text.trim().isNotEmpty &&
@@ -817,6 +904,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           lookingForInaPartner:
               lookingForInaPartnerTextEditingController.text.trim(),
           publishedDateTime: DateTime.now().millisecondsSinceEpoch,
+          gender: genderTextEditingController.text.trim(),
 
           //Appearance
           height: heightTextEditingController.text.trim(),
@@ -836,6 +924,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           willingToRelocate: willingToRelocateTextEditingController.text.trim(),
           relationshipYouAreLookingFor:
               relationshipYouAreLookingForTextEditingController.text.trim(),
+
+          //Connections
+          linkedInUrl: linkedInTextEditingController.text.trim(),
+          instagramUrl: instagramTextEditingController.text.trim(),
+          githubUrl: githubTextEditingController.text.trim(),
 
           //Background - Cultural Values
           nationality: nationalityTextEditingController.text.trim(),

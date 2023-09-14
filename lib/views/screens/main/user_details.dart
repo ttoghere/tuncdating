@@ -1,7 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slider/carousel.dart';
+import 'package:get/get.dart';
+import 'package:tuncdating/services/global.dart';
+import 'package:tuncdating/views/screens/screens.dart';
+import 'package:tuncdating/views/screens/side/account_settings.dart';
+
+import '../../widgets/user_carousel.dart';
 
 class UserDetails extends StatefulWidget {
   static const routeName = "/user";
@@ -16,6 +22,7 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
+  ScrollController controller = ScrollController();
   //personal info
   String name = '';
   String age = '';
@@ -24,6 +31,7 @@ class _UserDetailsState extends State<UserDetails> {
   String country = '';
   String profileHeading = '';
   String lookingForInaPartner = '';
+  String gender = "";
 
   //Appearance
   String height = '';
@@ -50,6 +58,11 @@ class _UserDetailsState extends State<UserDetails> {
   String religion = '';
   String ethnicity = '';
 
+  //Connections
+  String linkedInUrl = "";
+  String instagramUrl = "";
+  String githubUrl = "";
+
   //slider images
   String urlImage1 =
       "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg";
@@ -68,17 +81,15 @@ class _UserDetailsState extends State<UserDetails> {
         .get()
         .then((snapshot) {
       if (snapshot.exists) {
-        if (snapshot.data()!["urlImage1"] != null) {
-          setState(() {
+        setState(() {
+          if (snapshot.data()!["urlImage1"] != null) {
             urlImage1 = snapshot.data()!["urlImage1"];
             urlImage2 = snapshot.data()!["urlImage2"];
             urlImage3 = snapshot.data()!["urlImage3"];
             urlImage4 = snapshot.data()!["urlImage4"];
             urlImage5 = snapshot.data()!["urlImage5"];
-          });
-        }
+          }
 
-        setState(() {
           //personal info
           name = snapshot.data()!["name"];
           age = snapshot.data()!['age'].toString();
@@ -87,6 +98,7 @@ class _UserDetailsState extends State<UserDetails> {
           country = snapshot.data()!['country'];
           profileHeading = snapshot.data()!['profileHeading'];
           lookingForInaPartner = snapshot.data()!['lookingForInaPartner'];
+          gender = snapshot.data()!["gender"];
 
           //Appearance
           height = snapshot.data()!['height'];
@@ -113,6 +125,11 @@ class _UserDetailsState extends State<UserDetails> {
           languageSpoken = snapshot.data()!['languageSpoken'];
           religion = snapshot.data()!['religion'];
           ethnicity = snapshot.data()!['ethnicity'];
+
+          //Connections
+          linkedInUrl = snapshot.data()!["linkedIn"];
+          instagramUrl = snapshot.data()!["instagram"];
+          githubUrl = snapshot.data()!["github"];
         });
       }
     });
@@ -125,14 +142,48 @@ class _UserDetailsState extends State<UserDetails> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(
-          Icons.person,
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        automaticallyImplyLeading:
+            widget.userId == currentUserId ? false : true,
+        leading: widget.userId == currentUserId
+            ? Container()
+            : IconButton(
+                onPressed: widget.userId == currentUserId
+                    ? null
+                    : () {
+                        Get.back();
+                      },
+                icon: const Icon(Icons.arrow_back)),
         backgroundColor: Colors.red[900],
+        actions: [
+          widget.userId == currentUserId
+              ? Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AccountSettings()));
+                        },
+                        icon: const Icon(Icons.settings)),
+                    IconButton(
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Get.offAndToNamed(LoginScreen.routeName);
+                      },
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
+                )
+              : Container(),
+        ],
         elevation: 0,
         title: Text(
           "User Profile",
@@ -143,6 +194,7 @@ class _UserDetailsState extends State<UserDetails> {
         ),
       ),
       body: SingleChildScrollView(
+        controller: controller,
         child: Padding(
           padding: const EdgeInsets.all(30),
           child: Column(
@@ -162,7 +214,7 @@ class _UserDetailsState extends State<UserDetails> {
                     indicatorBarHeight: 30,
                     indicatorHeight: 10,
                     indicatorWidth: 10,
-                    unActivatedIndicatorColor: Colors.grey,
+                    unActivatedIndicatorColor: Colors.white,
                     stopAtEnd: false,
                     autoScroll: true,
                     items: [
@@ -232,7 +284,7 @@ class _UserDetailsState extends State<UserDetails> {
                         Text(
                           name,
                           style: const TextStyle(
-                            color: Colors.grey,
+                            color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
@@ -260,7 +312,7 @@ class _UserDetailsState extends State<UserDetails> {
                         Text(
                           age,
                           style: const TextStyle(
-                            color: Colors.grey,
+                            color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
@@ -288,7 +340,7 @@ class _UserDetailsState extends State<UserDetails> {
                         Text(
                           phoneNo,
                           style: const TextStyle(
-                            color: Colors.grey,
+                            color: Colors.white,
                             fontSize: 18,
                           ),
                         ),
@@ -313,7 +365,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         city,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -337,7 +389,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         country,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -361,7 +413,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         lookingForInaPartner,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -406,7 +458,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         height,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -430,7 +482,31 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         weight,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ]),
+
+                    //extra row
+                    const TableRow(children: [
+                      Text(''),
+                      Text(""),
+                    ]),
+
+                    //Gender
+                    TableRow(children: [
+                      const Text(
+                        "Gender: ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        gender,
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -454,7 +530,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         bodyType,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -499,7 +575,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         drink,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -523,7 +599,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         smoke,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -547,7 +623,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         martialStatus,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -571,7 +647,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         haveChildren,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -595,7 +671,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         noOfChildren,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -619,7 +695,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         profession,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -643,7 +719,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         employmentStatus,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -667,7 +743,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         income,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -691,7 +767,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         livingSituation,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -715,7 +791,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         willingToRelocate,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -739,7 +815,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         relationshipYouAreLookingFor,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -784,7 +860,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         nationality,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -808,7 +884,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         education,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -832,7 +908,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         languageSpoken,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -856,7 +932,7 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         religion,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
@@ -880,7 +956,77 @@ class _UserDetailsState extends State<UserDetails> {
                       Text(
                         ethnicity,
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ]),
+
+                    //Connections
+                    //extra row
+                    const TableRow(children: [
+                      Text(''),
+                      Text(""),
+                    ]),
+
+                    //Gender
+                    TableRow(children: [
+                      const Text(
+                        "LinkedIn: ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        linkedInUrl,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ]), //extra row
+                    const TableRow(children: [
+                      Text(''),
+                      Text(""),
+                    ]),
+
+                    //Gender
+                    TableRow(children: [
+                      const Text(
+                        "Github: ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        githubUrl,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ]),
+                    //extra row
+                    const TableRow(children: [
+                      Text(''),
+                      Text(""),
+                    ]),
+
+                    //Gender
+                    TableRow(children: [
+                      const Text(
+                        "Instagram: ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        instagramUrl,
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontSize: 18,
                         ),
                       ),

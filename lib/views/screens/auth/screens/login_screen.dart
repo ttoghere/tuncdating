@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 120,
               ),
               Text(
-                "Welcome to TuncDating",
+                "Welcome to Workpid",
                 style: headerStyle(size: 30),
               ),
               Image.asset(
@@ -66,86 +66,77 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                          showPB = true;
-                        });
-                        await AuthenticationController()
-                            .loginUser(
-                                passwordController: passwordController,
-                                emailController: emailController)
-                            .whenComplete(() => setState(() {
-                                  showPB = false;
-                                }));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 170, vertical: 10),
-                      ),
-                      child: showPB
-                          ? CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.red[900]!),
-                            )
-                          : Text(
-                              "Login",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    color: Colors.red[900],
-                                  ),
-                            ),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        showPB = true;
+                      });
+                      await AuthenticationController()
+                          .loginUser(
+                              passwordController: passwordController,
+                              emailController: emailController)
+                          .whenComplete(() => setState(() {
+                                showPB = false;
+                              }));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 170, vertical: 10),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account?",
-                          style:
-                              Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RegistrationScreen.routeName);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 2),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Text(
-                              "Create Here",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                    child: showPB
+                        ? CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.red[900]!),
+                          )
+                        : Text(
+                            "Login",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.red[900],
                             ),
                           ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account?",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(RegistrationScreen.routeName);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 2),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text(
+                            "Create Here",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

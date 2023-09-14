@@ -14,6 +14,7 @@ class Person {
   String? profileHeading;
   String? lookingForInaPartner;
   int? publishedDateTime;
+  String? gender;
 
   //Appearance
   String? height;
@@ -40,6 +41,11 @@ class Person {
   String? religion;
   String? ethnicity;
 
+  //Connections
+  String? instagramUrl;
+  String? linkedInUrl;
+  String? githubUrl;
+
   Person({
     //personal info
     this.uid,
@@ -54,6 +60,7 @@ class Person {
     this.profileHeading,
     this.lookingForInaPartner,
     this.publishedDateTime,
+    this.gender,
 
     //Appearance
     this.height,
@@ -79,52 +86,62 @@ class Person {
     this.languageSpoken,
     this.religion,
     this.ethnicity,
+
+    //Connections
+    this.githubUrl,
+    this.instagramUrl,
+    this.linkedInUrl,
   });
 
   static Person fromDataSnapshot(DocumentSnapshot snapshot) {
     var dataSnapshot = snapshot.data() as Map<String, dynamic>;
 
     return Person(
-      //personal info
-      uid: dataSnapshot["uid"],
-      name: dataSnapshot["name"],
-      imageProfile: dataSnapshot["imageProfile"],
-      email: dataSnapshot["email"],
-      password: dataSnapshot["password"],
-      age: dataSnapshot["age"],
-      phoneNo: dataSnapshot["phoneNo"],
-      city: dataSnapshot["city"],
-      country: dataSnapshot["country"],
-      profileHeading: dataSnapshot["profileHeading"],
-      lookingForInaPartner: dataSnapshot["lookingForInaPartner"],
-      publishedDateTime: dataSnapshot["publishedDateTime"],
+        //personal info
+        uid: dataSnapshot["uid"],
+        name: dataSnapshot["name"],
+        imageProfile: dataSnapshot["imageProfile"],
+        email: dataSnapshot["email"],
+        password: dataSnapshot["password"],
+        age: dataSnapshot["age"],
+        phoneNo: dataSnapshot["phoneNo"],
+        city: dataSnapshot["city"],
+        country: dataSnapshot["country"],
+        profileHeading: dataSnapshot["profileHeading"],
+        lookingForInaPartner: dataSnapshot["lookingForInaPartner"],
+        publishedDateTime: dataSnapshot["publishedDateTime"],
+        gender: dataSnapshot["gender"],
 
-      //Appearance
-      height: dataSnapshot["height"],
-      weight: dataSnapshot["weight"],
-      bodyType: dataSnapshot["bodyType"],
+        //Appearance
+        height: dataSnapshot["height"],
+        weight: dataSnapshot["weight"],
+        bodyType: dataSnapshot["bodyType"],
 
-      //Life style
-      drink: dataSnapshot["drink"],
-      smoke: dataSnapshot["smoke"],
-      martialStatus: dataSnapshot["martialStatus"],
-      haveChildren: dataSnapshot["haveChildren"],
-      noOfChildren: dataSnapshot["noOfChildren"],
-      profession: dataSnapshot["profession"],
-      employmentStatus: dataSnapshot["employmentStatus"],
-      income: dataSnapshot["income"],
-      livingSituation: dataSnapshot["livingSituation"],
-      willingToRelocate: dataSnapshot["willingToRelocate"],
-      relationshipYouAreLookingFor:
-          dataSnapshot["relationshipYouAreLookingFor"],
+        //Life style
+        drink: dataSnapshot["drink"],
+        smoke: dataSnapshot["smoke"],
+        martialStatus: dataSnapshot["martialStatus"],
+        haveChildren: dataSnapshot["haveChildren"],
+        noOfChildren: dataSnapshot["noOfChildren"],
+        profession: dataSnapshot["profession"],
+        employmentStatus: dataSnapshot["employmentStatus"],
+        income: dataSnapshot["income"],
+        livingSituation: dataSnapshot["livingSituation"],
+        willingToRelocate: dataSnapshot["willingToRelocate"],
+        relationshipYouAreLookingFor:
+            dataSnapshot["relationshipYouAreLookingFor"],
 
-      //Background - Cultural Values
-      nationality: dataSnapshot["nationality"],
-      education: dataSnapshot["education"],
-      languageSpoken: dataSnapshot["languageSpoken"],
-      religion: dataSnapshot["religion"],
-      ethnicity: dataSnapshot["ethnicity"],
-    );
+        //Background - Cultural Values
+        nationality: dataSnapshot["nationality"],
+        education: dataSnapshot["education"],
+        languageSpoken: dataSnapshot["languageSpoken"],
+        religion: dataSnapshot["religion"],
+        ethnicity: dataSnapshot["ethnicity"],
+
+        //Connections
+        linkedInUrl: dataSnapshot["linkedIn"],
+        instagramUrl: dataSnapshot["instagram"],
+        githubUrl: dataSnapshot["github"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -141,6 +158,7 @@ class Person {
         "profileHeading": profileHeading,
         "lookingForInaPartner": lookingForInaPartner,
         "publishedDateTime": publishedDateTime,
+        "gender": gender,
 
         //Appearance
         "height": height,
@@ -166,5 +184,10 @@ class Person {
         "languageSpoken": languageSpoken,
         "religion": religion,
         "ethnicity": ethnicity,
+
+        //Connections
+        "linkedIn": linkedInUrl,
+        "instagram": instagramUrl,
+        "github": githubUrl,
       };
 }

@@ -78,6 +78,7 @@ class _LikeSentLikeReceivedState extends State<LikeSentLikeReceived> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

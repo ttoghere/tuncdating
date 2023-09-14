@@ -57,6 +57,7 @@ class AuthenticationController extends GetxController {
     required String password,
     required String name,
     required int age,
+    required String gender,
     required String phoneNo,
     required String city,
     required String country,
@@ -82,6 +83,9 @@ class AuthenticationController extends GetxController {
     required String languageSpoken,
     required String religion,
     required String ethnicity,
+    required String instagramUrl,
+    required String linkedInUrl,
+    required String githubUrl,
   }) async {
     try {
       //User Create Method
@@ -95,45 +99,50 @@ class AuthenticationController extends GetxController {
           await uploadImageToStorage(imageFile: imageProfile);
       //Save user info to Firstore
       pM.Person personInstance = pM.Person(
-        //personal info
-        uid: FirebaseAuth.instance.currentUser!.uid,
-        imageProfile: urlOfDownloadedIMG,
-        email: email,
-        password: password,
-        name: name,
-        age: age,
-        phoneNo: phoneNo,
-        city: city,
-        country: country,
-        profileHeading: profileHeading,
-        lookingForInaPartner: lookingForInaPartner,
-        publishedDateTime: DateTime.now().millisecondsSinceEpoch,
+          //personal info
+          uid: FirebaseAuth.instance.currentUser!.uid,
+          imageProfile: urlOfDownloadedIMG,
+          email: email,
+          password: password,
+          name: name,
+          age: age,
+          phoneNo: phoneNo,
+          city: city,
+          country: country,
+          profileHeading: profileHeading,
+          lookingForInaPartner: lookingForInaPartner,
+          publishedDateTime: DateTime.now().millisecondsSinceEpoch,
+          gender: gender,
 
-        //Appearance
-        height: height,
-        weight: weight,
-        bodyType: bodyType,
+          //Appearance
+          height: height,
+          weight: weight,
+          bodyType: bodyType,
 
-        //Life style
-        drink: drink,
-        smoke: smoke,
-        martialStatus: martialStatus,
-        haveChildren: haveChildren,
-        noOfChildren: noOfChildren,
-        profession: profession,
-        employmentStatus: employmentStatus,
-        income: income,
-        livingSituation: livingSituation,
-        willingToRelocate: willingToRelocate,
-        relationshipYouAreLookingFor: relationshipYouAreLookingFor,
+          //Life style
+          drink: drink,
+          smoke: smoke,
+          martialStatus: martialStatus,
+          haveChildren: haveChildren,
+          noOfChildren: noOfChildren,
+          profession: profession,
+          employmentStatus: employmentStatus,
+          income: income,
+          livingSituation: livingSituation,
+          willingToRelocate: willingToRelocate,
+          relationshipYouAreLookingFor: relationshipYouAreLookingFor,
 
-        //Background - Cultural Values
-        nationality: nationality,
-        education: education,
-        languageSpoken: languageSpoken,
-        religion: religion,
-        ethnicity: ethnicity,
-      );
+          //Background - Cultural Values
+          nationality: nationality,
+          education: education,
+          languageSpoken: languageSpoken,
+          religion: religion,
+          ethnicity: ethnicity,
+
+          //Connection
+          githubUrl: githubUrl,
+          instagramUrl: instagramUrl,
+          linkedInUrl: linkedInUrl);
 
       await FirebaseFirestore.instance
           .collection("users")
